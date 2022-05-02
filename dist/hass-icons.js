@@ -1,4 +1,4 @@
-const BENNI_ICONS_MAP = {
+const ICONS_MAP = {
   "tado":
     "m5.1928 10.628h-3.1976v3.8538c0.010704 0.94899 1.4004 0.23192 1.5058 0.76411 0.037688 0.4908 0.07202 0.9648-0.6121 0.73992-0.97316 0.17126-2.0595-0.46675-2.0203-1.5382 0.003135-1.2725-8.9249e-4 -2.5462 2.9012e-4 -3.8195-0.71464 0.28191-0.96619-0.42043-0.66724-0.93865 0.722 0.23659 0.73324-0.34386 0.67687-0.8604 0.034879-0.29121-0.14664-0.73791 0.28767-0.74211 0.25801-0.050339 0.65281-0.29105 0.82984-0.22871v1.8312h3.1968c5.4e-6 0.31289-1.07e-5 0.62579 8e-6 0.93868zm0.37431-0.94028c0.96392 0.081619 2.0205-0.20529 2.9149 0.24569 0.72533 0.46307 0.6819 1.3655 0.65641 2.1188v3.9268h-1.1267c0.10586-0.86663-0.84889 0.43413-1.3526 0.1074-1.2933 0.03599-2.532-1.2271-2.1753-2.5433 0.26987-1.1968 1.6252-1.7884 2.7591-1.5992 1.2728 0.38425 0.88104-1.7713-0.23519-1.3147h-1.4405c-4e-7 -0.31383-8e-7 -0.62766 5e-7 -0.94149zm2.4419 3.1931c-0.83995 0.01895-2.1035-0.22513-2.4156 0.83298-0.32102 1.0835 1.042 1.8455 1.895 1.2374 0.76853-0.45708 0.46184-1.3465 0.52055-2.0704zm10.349-3.1905c1.529-0.095904 2.7753 1.3398 2.7982 2.8086 0.16859 1.4329-0.4721 3.1796-1.9969 3.571-1.4453 0.44752-3.1984-0.45338-3.4688-1.9931-0.43243-1.5102-0.02498-3.5219 1.5563-4.1823 0.35184-0.14185 0.73267-0.20516 1.1112-0.20416zm0 5.5378c1.193-0.01928 1.7597-1.3741 1.6929-2.4092 0.0414-1.0695-0.79888-2.4331-2.0124-2.1411-1.2217 0.33622-1.5454 1.85-1.3075 2.9452 0.15237 0.78498 0.74 1.6373 1.627 1.6051zm-3.2078-2.29v-5.1304c-0.37604-5.301e-4 -0.75209-0.00106-1.1281-0.0016v2.4425c-1.4012-1.1663-3.9077-0.44463-4.3059 1.3892-0.49905 1.5512-0.076262 3.6429 1.5522 4.334 1.4356 0.62358 3.3042-0.21385 3.6856-1.7611 0.13467-0.40971 0.19536-0.84189 0.19631-1.2726zm-2.8052 2.2936c-1.2508 0.02748-1.7956-1.4312-1.6855-2.488 0.01701-0.98539 0.67158-2.1965 1.7969-2.1043 1.2109 0.12692 1.6634 1.5391 1.5505 2.5876-0.06307 0.90878-0.60852 2.0269-1.6619 2.0047zm10.135-7.4278c-1.3924-0.12135-2.0469 2.0035-0.91126 2.7508 0.76713 0.5461 1.9665 0.26709 2.2658-0.66984 0.3941-0.8045-0.07974-1.9419-1.0266-2.0156-0.10933-0.021782-0.21863-0.043537-0.32795-0.065308zm0 2.6344c-0.93162 0.10471-1.3667-1.0856-0.90604-1.7775 0.47386-0.90946 2.0445-0.45691 2.0194 0.55847 0.0606 0.63948-0.4584 1.2512-1.1134 1.2191z",
 };
@@ -6,41 +6,41 @@ const BENNI_ICONS_MAP = {
 // assume modern style
 // Iconset API (Home Assistant 0.110 and up):
 async function getIcon(name) {
-  return { path: BENNI_ICONS_MAP[name] };
+  return { path: ICONS_MAP[name] };
 }
 
-let benni_icons_mode = 'modern';
+let icons_mode = 'modern';
 window.customIconsets = window.customIconsets || {};
-window.customIconsets["benni"] = getIcon;
+window.customIconsets["own"] = getIcon;
 
 // prepare for picker style
 async function getIconList() {
-  return Object.keys(BENNI_ICONS_MAP).map(icon => ({name: icon}));
+  return Object.keys(ICONS_MAP).map(icon => ({name: icon}));
 }
 
 if (!window.frontendVersion || window.frontendVersion < 20200519.0) {
   // ha-iconset-svg (Up to Home Assistant 0.109):
   const iconset = document.createElement("ha-iconset-svg");
-  iconset.name = "benni";
+  iconset.name = "own";
   iconset.size = "24";
 
   let iconsetHTML = "";
-  for (let key in BENNI_ICONS_MAP) {
-    iconsetHTML += `<g id="${key}"><path d="${BENNI_ICONS_MAP[key]}" /></g>`;
+  for (let key in ICONS_MAP) {
+    iconsetHTML += `<g id="${key}"><path d="${ICONS_MAP[key]}" /></g>`;
   }
 
   iconset.innerHTML = `<svg><defs>${iconsetHTML}</defs></svg>`;
   document.body.appendChild(iconset);
 
-  benni_icons_mode = 'legacy';
+  icons_mode = 'legacy';
 } else if(window.frontendVersion > 20211027.0) {
   // new enough to support getIcon and getIconlist
-  benni_icons_mode = 'picker';
-  window.customIcons["benni"] = { getIcon, getIconList };
+  icons_mode = 'picker';
+  window.customIcons["own"] = { getIcon, getIconList };
 }
 
 console.info(
-  `%c HASS-BENNI-ICONS         \n%c Version 1.3 [` + benni_icons_mode + `] `,
+  `%c HASS-own-ICONS         \n%c Version 1.3 [` + icons_mode + `] `,
   "color: orange; font-weight: bold; background: black",
   "color: white; font-weight: bold; background: dimgray"
 );
